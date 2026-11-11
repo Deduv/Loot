@@ -1,0 +1,91 @@
+
+
+# ------------------------------------------------------------------------------
+# 1. Compilação e Binários Java
+# ------------------------------------------------------------------------------
+*.class
+*.war
+*.ear
+*.jar
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+# Diretórios de saída de compilação
+bin/
+out/
+build/
+target/
+
+# ------------------------------------------------------------------------------
+# 2. Configurações de Ambientes e IDEs
+# (Evita conflitos entre integrantes usando editores diferentes)
+# ------------------------------------------------------------------------------
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.metadata/
+.classpath
+.project
+.settings/
+*.launch
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# ------------------------------------------------------------------------------
+# 3. Arquivos de Log e Temporários
+# ------------------------------------------------------------------------------
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+hs_err_pid*
+replay_pid*
+
+# ------------------------------------------------------------------------------
+# 4. Arquivos do Sistema Operacional (Linux, Windows, macOS)
+# ------------------------------------------------------------------------------
+# Linux
+.directory
+*~
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# ------------------------------------------------------------------------------
+# 5. Segurança, Credenciais e Configurações Locais
+# (Protege senhas de banco de dados e dados sensíveis)
+# ------------------------------------------------------------------------------
+*.env
+.env.*
+*.local
+segredos.*
+credenciais.*
+config.local.properties
