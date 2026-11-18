@@ -3,7 +3,7 @@
 ![Java 21](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Estrutura%20Inicial-0066CC?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-0066CC?style=for-the-badge)
 
 Projeto final da avaliação A3 da disciplina **Programação de Soluções Computacionais**, ministrada pelo **Prof. Lucas Santos** na **Universidade Salvador (UNIFACS)**.
 
@@ -62,7 +62,7 @@ Loot/
         └── Programa.java       # Ponto de entrada (main), exibição do menu e leitura de entrada
 ```
 
-*(Nota: o repositório encontra-se na etapa inicial de organização, antes da criação das classes e implementação do código-fonte).*
+*(Nota: a implementação encontra-se em andamento a partir da superclasse abstrata Jogo).*
 
 ---
 
@@ -78,10 +78,9 @@ Para evitar conflitos e manter a integridade do código principal, a equipe adot
 
 ## Equipe
 
-Trabalho desenvolvido pelos cinco integrantes abaixo:
+Trabalho desenvolvido pelos quatro integrantes abaixo:
 
-- Cauã
 - Eduardo Luís
 - Eduardo Santana
 - Ícaro
-- Magno
+- Samuel
