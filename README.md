@@ -1,4 +1,4 @@
-# LOOT — Gerenciador de Biblioteca de Jogo
+# LOOT — Gerenciador de Biblioteca de Jogos
 
 ![Java 21](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
