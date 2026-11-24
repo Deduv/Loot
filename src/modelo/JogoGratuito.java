@@ -1,6 +1,9 @@
 package modelo;
 
-
+/**
+ *
+ * @author Eduardo Luis
+ */
 
 public class JogoGratuito extends Jogo {
 
