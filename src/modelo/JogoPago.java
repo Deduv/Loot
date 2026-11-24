@@ -1,5 +1,10 @@
 package modelo;
 
+/**
+ *
+ * @author Eduardo Luis
+ */
+
 public class JogoPago extends Jogo {
 
     private double precoPago;
