@@ -20,6 +20,18 @@ public class Biblioteca {
      * @param id Identificador do jogo procurado.
      * @return O objeto Jogo correspondente, ou null caso nao seja encontrado.
      */
+    
+    private int proximoId = 1;
+
+public void incluirJogo(Jogo jogo) {
+    if (jogo == null) {
+        return;
+    }
+    jogo.setId(this.proximoId);
+    this.proximoId++;
+    this.jogos.add(jogo);
+}
+
     public Jogo consultarPorId(int id) {
         for (Jogo jogo : this.jogos) {
             if (jogo.getId() == id) {
@@ -46,4 +58,15 @@ public class Biblioteca {
         }
         return false;
     }
+    public void imprimirLista() {
+    if (this.jogos.isEmpty()) {
+        System.out.println("Nenhum jogo cadastrado na biblioteca.");
+        return;
+    }
+
+    for (Jogo jogo : this.jogos) {
+        System.out.println(jogo);
+    }
+}
+    
 }
