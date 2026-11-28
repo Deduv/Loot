@@ -1,88 +1,132 @@
-# LOOT — Gerenciador de Biblioteca de Jogos
+# LOOT — Biblioteca Pessoal de Jogos
 
-![Java 21](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-![Status](https://img.shields.io/badge/Status-C%C3%B3digo%20Conclu%C3%ADdo-success?style=for-the-badge)
+Projeto final da avaliação A3 da disciplina **Programação de Soluções Computacionais**, ministrada pelo **Prof. Lucas Santos**, na **Universidade Salvador (UNIFACS)**.
 
-Projeto final da avaliação A3 da disciplina **Programação de Soluções Computacionais**, ministrada pelo **Prof. Lucas Santos** na **Universidade Salvador (UNIFACS)**.
+O LOOT é um sistema de console em Java para registrar jogos já jogados ou em andamento, acompanhar horas acumuladas, guardar notas de avaliação e calcular o custo-benefício de cada título.
 
----
+## Intenções do projeto
 
-## Sobre o Projeto
+Em vez de fazer um cadastro genérico de "produtos" ou "clientes", escolhemos um tema próximo do dia a dia da equipe: organizar uma biblioteca pessoal de jogos. A ideia era que as regras do próprio domínio justificassem o uso de Orientação a Objetos sem forçar a barra.
 
-O **LOOT** é uma aplicação de linha de comando desenvolvida em Java puro para o gerenciamento de uma biblioteca pessoal de jogos. A proposta central é registrar títulos jogados, contabilizar horas acumuladas, armazenar avaliações pessoais e gerar análises simples de custo-benefício.
+Separar **jogos pagos** de **jogos gratuitos (free-to-play)** permitiu aplicar herança e polimorfismo com propósito real, já que cada tipo calcula o custo-benefício de um jeito diferente (preço de compra por hora jogada versus gastos com itens extras). Além disso, decidimos manter o projeto em Java puro, sem frameworks nem banco de dados, para focar na base da linguagem e garantir que todos os integrantes conseguissem ler e explicar qualquer parte do código.
 
-Para garantir que toda a equipe acompanhe o desenvolvimento e domine integralmente a lógica aplicada, o sistema foi projetado utilizando apenas recursos nativos da linguagem e conceitos trabalhados em sala de aula, executando diretamente no terminal com armazenamento em memória.
+## Como funciona
 
----
+Ao executar o programa, um menu interativo é exibido no terminal com as operações de um CRUD completo:
 
-## Alinhamento com os Requisitos da Avaliação A3
+1. **Cadastrar jogo:** o usuário escolhe se o jogo é pago (`1`) ou gratuito (`2`) e informa título, gênero, horas jogadas, nota (0 a 10), ano de lançamento e o valor correspondente (preço pago ou gasto com itens extras). O ID é gerado automaticamente.
+2. **Listar todos os jogos:** exibe todos os títulos cadastrados com resumo, detalhes específicos do tipo de jogo e análise de custo-benefício.
+3. **Buscar jogo por ID:** localiza e mostra os dados de um jogo específico.
+4. **Atualizar jogo:** permite alterar as horas jogadas e a nota de um título já cadastrado.
+5. **Excluir jogo por ID:** remove um título da biblioteca.
+0. **Sair:** encerra o programa.
 
-A modelagem do sistema atende diretamente aos critérios definidos para o projeto final da disciplina:
+Cada operação roda uma vez e devolve o controle ao menu principal. Os dados ficam salvos em memória (`ArrayList`) enquanto o programa está aberto.
 
-| Requisito da Disciplina | Aplicação no Projeto LOOT |
-| :--- | :--- |
-| **Desenvolvimento em Java** | Implementado integralmente em Java 21 padrão, sem uso de frameworks externos. |
-| **Menu no Console (CRUD)** | Operações de inclusão, consulta, alteração, exclusão e impressão da lista completa via terminal. |
-| **Registro Individual por Ação** | O menu opera dentro de um laço `do-while` com `switch-case`. Cada operação executa uma única ação e retorna ao menu principal, sem laços contínuos presos no cadastro. |
-| **Mínimo de 4 Classes** | Arquitetura organizada em 5 classes distintas distribuídas em pacotes: `Jogo`, `JogoPago`, `JogoGratuito`, `Biblioteca` e `Programa`. |
-| **Mínimo de 5 Atributos** | A superclasse `Jogo` define 6 atributos base: `id`, `titulo`, `genero`, `horasJogadas`, `notaAvaliacao` e `anoLancamento`. |
-| **Herança Funcional** | A classe abstrata `Jogo` é estendida pelas classes concretas `JogoPago` e `JogoGratuito`, que adicionam atributos específicos (`precoPago` e `gastoItensExtras`). |
-| **Polimorfismo Funcional** | Implementação do método abstrato `analisarCustoBeneficio()`, sobrescrito (`@Override`) nas subclasses com regras de cálculo distintas, sem depender de `toString()`. |
+### Regras de cálculo e validação
 
----
+- **Jogo Pago:** se o preço for `R$ 0,00`, informa que foi obtido sem custo; se ainda tiver `0` horas jogadas, informa o valor investido; caso contrário, divide o preço pago pelas horas jogadas (`R$/h`).
+- **Jogo Gratuito:** se não houve gasto extra, exibe as horas aproveitadas gratuitamente; se houve gasto mas ainda não foi jogado, informa o total gasto; caso contrário, calcula o custo por hora em itens extras.
+- **Validações:** o sistema aceita decimais com ponto ou vírgula (ex.: `9.5` ou `9,5`), impede campos vazios, bloqueia números negativos (horas, preço, gasto), limita notas entre `0` e `10`, valida o ano de lançamento entre `1950` e o ano atual e trata entradas inválidas sem fechar o programa.
 
-## Tecnologias e Padrão de Ambiente
+## Estrutura do projeto
 
-- **Linguagem:** Java 21 (JDK 21)
-- **Interface de Interação:** Console / Terminal (`java.util.Scanner`)
-- **Armazenamento:** Em memória durante a execução (`java.util.ArrayList`)
-- **Controle de Versão:** Git e GitHub
-- **Editor / IDE:** Livre escolha entre os integrantes (VS Code, IntelliJ IDEA, Eclipse ou NetBeans), com arquivos locais de configuração filtrados pelo `.gitignore`
-
----
-
-## Arquitetura Planejada
-
-O código-fonte será estruturado em pacotes com nomenclatura em português para facilitar a leitura e a manutenção em equipe:
+O código está separado em quatro pacotes em português, cada um com uma responsabilidade:
 
 ```text
 Loot/
-├── .gitignore
 ├── README.md
+├── build.xml
+├── manifest.mf
+├── nbproject/
 └── src/
     ├── modelo/
-    │   ├── Jogo.java           # Superclasse abstrata com atributos e assinatura polimórfica
-    │   ├── JogoPago.java       # Subclasse para títulos comprados (cálculo de valor por hora)
-    │   └── JogoGratuito.java   # Subclasse para títulos gratuitos (análise de gastos extras)
+    │   ├── Jogo.java           # Superclasse abstrata com atributos base, validações e métodos abstratos
+    │   ├── JogoPago.java       # Subclasse de Jogo com preço pago e cálculo de custo por hora
+    │   └── JogoGratuito.java   # Subclasse de Jogo com gastos extras e análise F2P
     ├── controle/
-    │   └── Biblioteca.java     # Gerenciamento da lista de jogos e operações do CRUD
+    │   └── Biblioteca.java     # Armazena a lista de jogos e executa inclusão, busca, alteração e exclusão
+    ├── visao/
+    │   └── Menu.java           # Interface de console, leitura e tratamento das entradas do usuário
     └── programa/
-        └── Programa.java       # Ponto de entrada (main), exibição do menu e leitura de entrada
+        └── Programa.java       # Ponto de entrada (main), apenas inicializa e encerra o Menu
 ```
 
-*(Nota: a implementação do código-fonte encontra-se concluída e testada).*
+## Pré-requisitos e dependências
 
----
+- **Java Development Kit (JDK) 21** ou superior instalado e configurado no `PATH`.
+- **Git** (opcional, apenas para clonar o repositório; também é possível baixar o ZIP direto pelo GitHub).
+- **Sem dependências externas:** o projeto utiliza apenas a biblioteca padrão do Java (JDK). Não é preciso instalar banco de dados, Maven ou Gradle.
 
-## Fluxo de Trabalho da Equipe no Git
+## Como baixar e rodar na sua máquina
 
-Para evitar conflitos e manter a integridade do código principal, a equipe adota as seguintes práticas:
+### 1. Verifique se o Java 21 está instalado
 
-1. A branch `main` armazena apenas código compilado e testado.
-2. Cada integrante cria uma branch paralela para desenvolver sua respectiva tarefa antes de integrar as alterações.
-3. Antes de iniciar qualquer alteração local, atualiza-se a cópia com `git pull origin main`.
+```bash
+java -version
+javac -version
+```
 
----
+### 2. Baixe o projeto
 
-## Equipe e Divisão de Responsabilidades
+Com Git:
 
-Trabalho desenvolvido pelos quatro integrantes abaixo:
+```bash
+git clone https://github.com/Deduv/Loot.git
+cd Loot
+```
 
-| Integrante | RA | Responsabilidade na Arquitetura |
+Se preferir, baixe o arquivo `.zip` no GitHub, extraia e abra o terminal dentro da pasta `Loot`.
+
+### 3. Compile e execute pelo terminal
+
+**Linux / macOS:**
+
+```bash
+mkdir -p bin
+javac -encoding UTF-8 -d bin src/*/*.java
+java -cp bin programa.Programa
+```
+
+**Windows (PowerShell ou Prompt de Comando):**
+
+```powershell
+mkdir bin
+javac -encoding UTF-8 -d bin src\modelo\*.java src\controle\*.java src\visao\*.java src\programa\*.java
+java -cp bin programa.Programa
+```
+
+### 4. Executando por uma IDE (opcional)
+
+O projeto pode ser aberto diretamente no **NetBeans** (já inclui `nbproject/` e `build.xml`), **VS Code**, **IntelliJ IDEA** ou **Eclipse**. Basta apontar para o JDK 21 e executar a classe `src/programa/Programa.java`.
+
+## Assuntos de Java e POO abordados
+
+- **Classes, objetos e construtores:** modelagem das entidades e encadeamento de construtores com `super(...)`.
+- **Encapsulamento:** atributos declarados como `private`, acessados por getters e setters que validam os dados antes de gravar, além de `Collections.unmodifiableList(...)` na listagem para proteger a lista interna da `Biblioteca`.
+- **Abstração:** classe abstrata `Jogo` definindo o contrato comum (`analisarCustoBeneficio()` e `exibirDetalhes()`) sem permitir instanciar um jogo genérico.
+- **Herança:** `JogoPago` e `JogoGratuito` estendendo `Jogo` (`extends`) e reaproveitando atributos, validações e o resumo base.
+- **Polimorfismo:** a `Biblioteca` trabalha com uma única coleção `ArrayList<Jogo>`, e o `Menu` chama `exibirDetalhes()` e `analisarCustoBeneficio()` diretamente pela referência de `Jogo`, sem usar `toString()` nem `instanceof`.
+- **Estruturas de controle e coleções:** uso de `ArrayList`, `List`, `do-while`, `for-each` e `switch-case`.
+- **Tratamento de exceções:** lançamento de `IllegalArgumentException` nas regras de negócio e captura no `Menu` (`try/catch`), junto com `NumberFormatException` e `NoSuchElementException` para evitar que entradas erradas encerrem a execução.
+- **API padrão do Java:** `Scanner` para entrada no console, `String.format` para formatação de saída e `java.time.Year` para validação do ano de lançamento.
+- **Organização em pacotes:** separação entre `modelo`, `controle`, `visao` e `programa`.
+
+## O que aprendemos
+
+- **Separar responsabilidades facilita muito a manutenção:** no início, o menu ficava dentro da classe `Programa` e a `Biblioteca` imprimia direto no console. Quando criamos `visao/Menu.java` e deixamos a `Biblioteca` só retornando dados, o código ficou mais limpo e bem mais fácil de alterar sem quebrar outras partes.
+- **Polimorfismo na prática evita condicionais espalhadas:** substituir verificações com `instanceof` pelo método abstrato `exibirDetalhes()` mostrou na prática por que o polimorfismo reduz acoplamento.
+- **Validar entrada de usuário dá trabalho real:** testar o programa com letras no lugar de números, decimais com ponto e vírgula, notas acima de 10 e valores negativos revelou vários pontos onde o sistema travava antes de tratarmos as exceções corretamente.
+- **Colaboração com Git e GitHub:** trabalhar em quatro pessoas no mesmo repositório exigiu combinar estrutura de pastas, dividir responsabilidades por classe e manter o histórico organizado.
+
+## Equipe
+
+**Disciplina:** Programação de Soluções Computacionais — UNIFACS  
+**Professor:** Lucas Santos
+
+| Integrante | RA | Responsabilidade |
 | :--- | :--- | :--- |
-| **Eduardo Santana dos Santos** | 12725222129 | **Tópico 4:** Busca e Alteração (`consultarPorId` e `alterarJogo` em `Biblioteca.java`) |
-| **Ícaro Santos Silva** | 1272627053 | **Tópicos 1 e 3:** Classe Abstrata (`Jogo.java`) + Entrada e Listagem (`gerarProximoId`, `incluirJogo` e `imprimirLista` em `Biblioteca.java`) |
-| **Eduardo Luis de Oliveira Mendonça** | 12725217607 | **Tópico 2:** Herança e Polimorfismo (`JogoPago.java` e `JogoGratuito.java`) |
-| **Saulo Magno Santos de Jesus** | 1272322763 | **Tópico 5:** Validação, Exclusão e Menu Principal (`estaVazia` e `excluirJogo` em `Biblioteca.java` + `Programa.java`) |
+| **Eduardo Santana dos Santos** | 12725222129 | `controle/Biblioteca.java` e `visao/Menu.java` |
+| **Ícaro Santos Silva** | 1272627053 | `modelo/Jogo.java` e `programa/Programa.java` |
+| **Eduardo Luis de Oliveira Mendonça** | 12725217607 | `modelo/JogoGratuito.java` e `modelo/JogoPago.java` |
+| **Saulo Magno Santos de Jesus** | 1272322763 | `programa/Programa.java` |
