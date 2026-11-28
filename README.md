@@ -3,7 +3,7 @@
 ![Java 21](https://img.shields.io/badge/Java-21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-0066CC?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-C%C3%B3digo%20Conclu%C3%ADdo-success?style=for-the-badge)
 
 Projeto final da avaliação A3 da disciplina **Programação de Soluções Computacionais**, ministrada pelo **Prof. Lucas Santos** na **Universidade Salvador (UNIFACS)**.
 
@@ -58,11 +58,11 @@ Loot/
     │   └── JogoGratuito.java   # Subclasse para títulos gratuitos (análise de gastos extras)
     ├── controle/
     │   └── Biblioteca.java     # Gerenciamento da lista de jogos e operações do CRUD
-    └── principal/
+    └── programa/
         └── Programa.java       # Ponto de entrada (main), exibição do menu e leitura de entrada
 ```
 
-*(Nota: a implementação encontra-se em andamento a partir da superclasse abstrata Jogo).*
+*(Nota: a implementação do código-fonte encontra-se concluída e testada).*
 
 ---
 
@@ -83,4 +83,4 @@ Trabalho desenvolvido pelos quatro integrantes abaixo:
 - Eduardo Luís
 - Eduardo Santana
 - Ícaro
-- Samuel
+- Saulo
