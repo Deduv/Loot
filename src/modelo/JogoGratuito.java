@@ -17,11 +17,16 @@ public class JogoGratuito extends Jogo {
         return gastoItensExtras;
     }
 
-    public void setGastoItensExtras(double gastoItensExtras) {
+    public final void setGastoItensExtras(double gastoItensExtras) {
         if (gastoItensExtras < 0) {
             throw new IllegalArgumentException("O gasto com itens extras não pode ser negativo.");
         }
         this.gastoItensExtras = gastoItensExtras;
+    }
+
+    @Override
+    public String exibirDetalhes() {
+        return String.format("Tipo: Jogo Gratuito | Gastos extras: R$ %.2f", gastoItensExtras);
     }
 
     @Override

@@ -17,11 +17,16 @@ public class JogoPago extends Jogo {
         return precoPago;
     }
 
-    public void setPrecoPago(double precoPago) {
+    public final void setPrecoPago(double precoPago) {
         if (precoPago < 0) {
             throw new IllegalArgumentException("O preço pago não pode ser negativo.");
         }
         this.precoPago = precoPago;
+    }
+
+    @Override
+    public String exibirDetalhes() {
+        return String.format("Tipo: Jogo Pago | Preço: R$ %.2f", precoPago);
     }
 
     @Override
