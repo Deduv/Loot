@@ -2,14 +2,10 @@ package programa;
 
 import controle.Biblioteca;
 import java.util.Scanner;
-import modelo.Jogo;
 import modelo.JogoGratuito;
 import modelo.JogoPago;
 
 /**
- * Classe principal responsável apenas por iniciar o menu interativo,
- * ler as entradas do usuário via console e acionar os métodos da Biblioteca.
- *
  * @author Saulo Magno Santos de Jesus
  */
 public class Programa {
@@ -40,12 +36,11 @@ public class Programa {
                 leitor.nextLine();
                 continue;
             }
-
             opcao = leitor.nextInt();
             leitor.nextLine();
 
             if (opcao >= 2 && opcao <= 5 && biblioteca.estaVazia()) {
-                System.out.println("\n[Aviso] A biblioteca ainda está vazia! Cadastre um jogo na Opção 1 primeiro.");
+                System.out.println("A biblioteca está vazia! Cadastre um jogo primeiro.");
                 continue;
             }
 
@@ -57,114 +52,55 @@ public class Programa {
                     biblioteca.imprimirLista();
                     break;
                 case 3:
-                    buscarJogo();
+                    System.out.print("ID do jogo: ");
+                    biblioteca.imprimirJogo(biblioteca.consultarPorId(leitor.nextInt()));
                     break;
                 case 4:
-                    atualizarJogo();
+                    System.out.print("ID do jogo: ");
+                    int idAlterar = leitor.nextInt();
+                    System.out.print("Novas horas jogadas: ");
+                    double novasHoras = leitor.nextDouble();
+                    System.out.print("Nova nota (0 a 10): ");
+                    double novaNota = leitor.nextDouble();
+                    System.out.println(biblioteca.alterarJogo(idAlterar, novasHoras, novaNota)
+                            ? "Jogo atualizado com sucesso!" : "Jogo não encontrado.");
                     break;
                 case 5:
-                    removerJogo();
+                    System.out.print("ID do jogo: ");
+                    System.out.println(biblioteca.excluirJogo(leitor.nextInt())
+                            ? "Jogo removido com sucesso!" : "Jogo não encontrado.");
                     break;
                 case 0:
                     System.out.println("Encerrando o sistema... Até logo!");
                     break;
                 default:
-                    System.out.println("Opção inválida! Escolha um número entre 0 e 5.");
-                    break;
+                    System.out.println("Opção inválida!");
             }
         } while (opcao != 0);
     }
 
     private static void lerDadosJogo() {
-        System.out.println("\n--- CADASTRAR JOGO ---");
-        System.out.print("Tipo de jogo (1-Pago | 2-Gratuito): ");
-        if (!leitor.hasNextInt()) {
-            System.out.println("Tipo inválido! Digite 1 ou 2.");
-            leitor.nextLine();
-            return;
-        }
+        System.out.print("Tipo (1-Pago | 2-Gratuito): ");
         int tipo = leitor.nextInt();
         leitor.nextLine();
-
-        if (tipo != 1 && tipo != 2) {
-            System.out.println("Tipo inválido! Operação cancelada.");
-            return;
-        }
-
         System.out.print("Título: ");
         String titulo = leitor.nextLine();
-
         System.out.print("Gênero: ");
         String genero = leitor.nextLine();
-
         System.out.print("Horas jogadas: ");
         double horas = leitor.nextDouble();
-
-        System.out.print("Nota de avaliação (0 a 10): ");
+        System.out.print("Nota (0 a 10): ");
         double nota = leitor.nextDouble();
-
         System.out.print("Ano de lançamento: ");
         int ano = leitor.nextInt();
-        leitor.nextLine();
-
-        int novoId = biblioteca.gerarProximoId();
 
         if (tipo == 1) {
             System.out.print("Preço pago (R$): ");
-            double precoPago = leitor.nextDouble();
-            leitor.nextLine();
-
-            biblioteca.incluirJogo(new JogoPago(novoId, titulo, genero, horas, nota, ano, precoPago));
+            biblioteca.incluirJogo(new JogoPago(0, titulo, genero, horas, nota, ano, leitor.nextDouble()));
         } else {
             System.out.print("Gasto com itens extras (R$): ");
-            double gastoExtras = leitor.nextDouble();
-            leitor.nextLine();
-
-            biblioteca.incluirJogo(new JogoGratuito(novoId, titulo, genero, horas, nota, ano, gastoExtras));
+            biblioteca.incluirJogo(new JogoGratuito(0, titulo, genero, horas, nota, ano, leitor.nextDouble()));
         }
-
         System.out.println("Jogo cadastrado com sucesso!");
-    }
-
-    private static void buscarJogo() {
-        System.out.println("\n--- BUSCAR JOGO ---");
-        System.out.print("Digite o ID do jogo: ");
-        int idBusca = leitor.nextInt();
-        leitor.nextLine();
-
-        Jogo encontrado = biblioteca.consultarPorId(idBusca);
-        biblioteca.imprimirJogo(encontrado);
-    }
-
-    private static void atualizarJogo() {
-        System.out.println("\n--- ATUALIZAR JOGO ---");
-        System.out.print("Digite o ID do jogo para atualizar: ");
-        int idAlt = leitor.nextInt();
-
-        System.out.print("Novas horas jogadas: ");
-        double novasHoras = leitor.nextDouble();
-
-        System.out.print("Nova nota de avaliação (0 a 10): ");
-        double novaNota = leitor.nextDouble();
-        leitor.nextLine();
-
-        if (biblioteca.alterarJogo(idAlt, novasHoras, novaNota)) {
-            System.out.println("Dados atualizados com sucesso!");
-        } else {
-            System.out.println("Não foi possível atualizar. Verifique o ID informado.");
-        }
-    }
-
-    private static void removerJogo() {
-        System.out.println("\n--- EXCLUIR JOGO ---");
-        System.out.print("Digite o ID do jogo que deseja remover: ");
-        int idExclusao = leitor.nextInt();
-        leitor.nextLine();
-
-        if (biblioteca.excluirJogo(idExclusao)) {
-            System.out.println("Jogo removido com sucesso!");
-        } else {
-            System.out.println("Jogo com ID " + idExclusao + " não encontrado.");
-        }
     }
 }

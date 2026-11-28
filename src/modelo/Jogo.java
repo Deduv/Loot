@@ -1,8 +1,6 @@
 package modelo;
 
 /**
- * Classe abstrata base que representa qualquer jogo cadastrado no sistema.
- *
  * @author Ícaro Santos Silva
  */
 public abstract class Jogo {

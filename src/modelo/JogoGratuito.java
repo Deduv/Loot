@@ -1,11 +1,8 @@
 package modelo;
 
 /**
- * Subclasse que representa um jogo gratuito (Free-to-Play), com análise de gastos em itens extras.
- *
  * @author Eduardo Luis de Oliveira Mendonça
  */
-
 public class JogoGratuito extends Jogo {
 
     private double gastoItensExtras;
