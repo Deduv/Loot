@@ -1,9 +1,9 @@
 package controle;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import modelo.Jogo;
-import modelo.JogoGratuito;
-import modelo.JogoPago;
 
 /**
  * @author Ícaro Santos Silva
@@ -12,55 +12,36 @@ import modelo.JogoPago;
  */
 public class Biblioteca {
 
-    private ArrayList<Jogo> listaDeJogos;
+    private final ArrayList<Jogo> listaDeJogos;
     private int proximoId = 1;
 
     public Biblioteca() {
         this.listaDeJogos = new ArrayList<>();
     }
 
-    public int gerarProximoId() {
+    private int gerarProximoId() {
         return this.proximoId++;
     }
 
     public void incluirJogo(Jogo novoJogo) {
         if (novoJogo == null) {
-            return;
+            throw new IllegalArgumentException("O jogo não pode ser nulo.");
         }
-        if (novoJogo.getId() <= 0) {
+
+        int id = novoJogo.getId();
+        if (id == 0) {
             novoJogo.setId(gerarProximoId());
+        } else if (consultarPorId(id) != null) {
+            throw new IllegalArgumentException("Já existe um jogo com o ID #" + id + ".");
+        } else if (id >= this.proximoId) {
+            this.proximoId = id + 1;
         }
+
         this.listaDeJogos.add(novoJogo);
     }
 
-    public void imprimirLista() {
-        if (this.listaDeJogos.isEmpty()) {
-            System.out.println("Nenhum jogo cadastrado na biblioteca.");
-            return;
-        }
-
-        System.out.println("\n========== LISTA DE JOGOS CADASTRADOS ==========");
-        for (Jogo jogo : this.listaDeJogos) {
-            imprimirJogo(jogo);
-        }
-    }
-
-    public void imprimirJogo(Jogo jogo) {
-        if (jogo == null) {
-            System.out.println("Jogo não encontrado.");
-            return;
-        }
-
-        System.out.println(jogo.exibirResumo());
-
-        if (jogo instanceof JogoPago pago) {
-            System.out.printf("Tipo: Jogo Pago | Preço: R$ %.2f%n", pago.getPrecoPago());
-        } else if (jogo instanceof JogoGratuito gratuito) {
-            System.out.printf("Tipo: Jogo Gratuito | Gastos extras: R$ %.2f%n", gratuito.getGastoItensExtras());
-        }
-
-        System.out.println("Análise: " + jogo.analisarCustoBeneficio());
-        System.out.println("----------------------------------------");
+    public List<Jogo> listarJogos() {
+        return Collections.unmodifiableList(this.listaDeJogos);
     }
 
     public Jogo consultarPorId(int id) {
@@ -75,8 +56,7 @@ public class Biblioteca {
     public boolean alterarJogo(int id, double novasHoras, double novaNota) {
         Jogo jogo = consultarPorId(id);
         if (jogo != null) {
-            jogo.setHorasJogadas(novasHoras);
-            jogo.setNotaAvaliacao(novaNota);
+            jogo.atualizarProgresso(novasHoras, novaNota);
             return true;
         }
         return false;
