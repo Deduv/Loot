@@ -1,10 +1,11 @@
 package modelo;
 
 /**
+ * Classe abstrata base que representa qualquer jogo cadastrado no sistema.
  *
- * @author icaro
+ * @author Ícaro Santos Silva
  */
-    public abstract class Jogo {
+public abstract class Jogo {
     protected int id;
     protected String titulo;
     protected String genero;
@@ -48,6 +49,11 @@ package modelo;
 
     public int getAnoLancamento() { return anoLancamento; }
     public void setAnoLancamento(int anoLancamento) { this.anoLancamento = anoLancamento; }
+
+    public String exibirResumo() {
+        return String.format("ID: #%d | Título: %s (%d) | Gênero: %s | Horas: %.1fh | Nota: %.1f/10",
+                id, titulo, anoLancamento, genero, horasJogadas, notaAvaliacao);
+    }
 
     public abstract String analisarCustoBeneficio();
 }

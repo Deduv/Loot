@@ -76,11 +76,13 @@ Para evitar conflitos e manter a integridade do código principal, a equipe adot
 
 ---
 
-## Equipe
+## Equipe e Divisão de Responsabilidades
 
 Trabalho desenvolvido pelos quatro integrantes abaixo:
 
-- Eduardo Luís
-- Eduardo Santana
-- Ícaro
-- Saulo
+| Integrante | RA | Responsabilidade na Arquitetura |
+| :--- | :--- | :--- |
+| **Eduardo Santana dos Santos** | 12725222129 | **Tópico 4:** Busca e Alteração (`consultarPorId` e `alterarJogo` em `Biblioteca.java`) |
+| **Ícaro Santos Silva** | 1272627053 | **Tópicos 1 e 3:** Classe Abstrata (`Jogo.java`) + Entrada e Listagem (`gerarProximoId`, `incluirJogo` e `imprimirLista` em `Biblioteca.java`) |
+| **Eduardo Luis de Oliveira Mendonça** | 12725217607 | **Tópico 2:** Herança e Polimorfismo (`JogoPago.java` e `JogoGratuito.java`) |
+| **Saulo Magno Santos de Jesus** | 1272322763 | **Tópico 5:** Validação, Exclusão e Menu Principal (`estaVazia` e `excluirJogo` em `Biblioteca.java` + `Programa.java`) |

@@ -6,39 +6,113 @@ import modelo.JogoPago;
 import modelo.JogoGratuito;
 
 /**
- * Classe responsavel pelo gerenciamento da colecao de jogos da biblioteca.
+ * Classe responsável pelo gerenciamento da coleção de jogos da biblioteca (CRUD).
+ *
+ * Divisão de responsabilidade na classe:
+ * - Parte 1 (N3 - Cadastro, geração de ID e listagem): Ícaro Santos Silva
+ * - Parte 2 (N4 - Consulta por ID e alteração): Eduardo Santana dos Santos
+ * - Parte 3 (N5 - Validação de lista vazia e exclusão): Saulo Magno Santos de Jesus
+ *
+ * @author Ícaro Santos Silva
+ * @author Eduardo Santana dos Santos
+ * @author Saulo Magno Santos de Jesus
  */
 public class Biblioteca {
 
-    private ArrayList<Jogo> jogos;
+    private ArrayList<Jogo> listaDeJogos;
     private int proximoId = 1;
 
     public Biblioteca() {
-        this.jogos = new ArrayList<>();
+        this.listaDeJogos = new ArrayList<>();
+    }
+
+    // =========================================================================
+    // PARTE 1 (NÚMERO 3): Cadastro, Geração de ID e Listagem
+    // @author Ícaro Santos Silva
+    // =========================================================================
+
+    /**
+     * Gera e retorna o próximo identificador sequencial único (1, 2, 3...).
+     *
+     * @author Ícaro Santos Silva
+     * @return Próximo ID disponível.
+     */
+    public int gerarProximoId() {
+        return this.proximoId++;
     }
 
     /**
-     * Inclui um novo jogo na colecao e atribui um identificador sequencial automatico.
+     * Inclui um novo jogo na coleção e atribui um identificador sequencial automático
+     * caso o jogo ainda não possua um ID válido.
      *
-     * @param jogo Objeto do jogo a ser adicionado.
+     * @author Ícaro Santos Silva
+     * @param novoJogo Objeto do jogo a ser adicionado.
      */
-    public void incluirJogo(Jogo jogo) {
-        if (jogo == null) {
+    public void incluirJogo(Jogo novoJogo) {
+        if (novoJogo == null) {
             return;
         }
-        jogo.setId(this.proximoId);
-        this.proximoId++;
-        this.jogos.add(jogo);
+        if (novoJogo.getId() <= 0) {
+            novoJogo.setId(gerarProximoId());
+        }
+        this.listaDeJogos.add(novoJogo);
     }
 
     /**
-     * Consulta um jogo na colecao a partir de seu identificador unico.
+     * Imprime a lista completa de jogos cadastrados utilizando exibirResumo() e analisarCustoBeneficio().
      *
+     * @author Ícaro Santos Silva
+     */
+    public void imprimirLista() {
+        if (this.listaDeJogos.isEmpty()) {
+            System.out.println("Nenhum jogo cadastrado na biblioteca.");
+            return;
+        }
+
+        System.out.println("\n========== LISTA DE JOGOS CADASTRADOS ==========");
+        for (Jogo jogo : this.listaDeJogos) {
+            imprimirJogo(jogo);
+        }
+    }
+
+    /**
+     * Imprime os detalhes individuais de um jogo e a sua análise polimórfica.
+     *
+     * @author Ícaro Santos Silva
+     * @param jogo Objeto Jogo a ser exibido.
+     */
+    public void imprimirJogo(Jogo jogo) {
+        if (jogo == null) {
+            System.out.println("Jogo não encontrado.");
+            return;
+        }
+
+        System.out.println(jogo.exibirResumo());
+
+        if (jogo instanceof JogoPago pago) {
+            System.out.printf("Tipo: Jogo Pago | Preço: R$ %.2f%n", pago.getPrecoPago());
+        } else if (jogo instanceof JogoGratuito gratuito) {
+            System.out.printf("Tipo: Jogo Gratuito | Gastos extras: R$ %.2f%n", gratuito.getGastoItensExtras());
+        }
+
+        System.out.println("Análise: " + jogo.analisarCustoBeneficio());
+        System.out.println("----------------------------------------");
+    }
+
+    // =========================================================================
+    // PARTE 2 (NÚMERO 4): Consulta por ID e Alteração
+    // @author Eduardo Santana dos Santos
+    // =========================================================================
+
+    /**
+     * Consulta um jogo na coleção a partir de seu identificador único.
+     *
+     * @author Eduardo Santana dos Santos
      * @param id Identificador do jogo procurado.
-     * @return O objeto Jogo correspondente, ou null caso nao seja encontrado.
+     * @return O objeto Jogo correspondente, ou null caso não seja encontrado.
      */
     public Jogo consultarPorId(int id) {
-        for (Jogo jogo : this.jogos) {
+        for (Jogo jogo : this.listaDeJogos) {
             if (jogo.getId() == id) {
                 return jogo;
             }
@@ -47,12 +121,13 @@ public class Biblioteca {
     }
 
     /**
-     * Altera os dados variaveis de um jogo existente (horas jogadas e nota).
+     * Altera os dados variáveis de um jogo existente (horas jogadas e nota).
      *
+     * @author Eduardo Santana dos Santos
      * @param id Identificador do jogo a ser alterado.
      * @param novasHoras Quantidade atualizada de horas jogadas.
-     * @param novaNota Nota de avaliacao atualizada (0.0 a 10.0).
-     * @return true se o jogo foi localizado e atualizado; false caso contrario.
+     * @param novaNota Nota de avaliação atualizada (0.0 a 10.0).
+     * @return true se o jogo foi localizado e atualizado; false caso contrário.
      */
     public boolean alterarJogo(int id, double novasHoras, double novaNota) {
         Jogo jogo = consultarPorId(id);
@@ -64,67 +139,34 @@ public class Biblioteca {
         return false;
     }
 
-    /**
-     * Exclui um jogo da colecao a partir de seu identificador unico.
-     *
-     * @param id Identificador do jogo a ser removido.
-     * @return true se o jogo foi localizado e removido; false caso contrario.
-     */
-    public boolean excluirJogo(int id) {
-        for (int i = 0; i < this.jogos.size(); i++) {
-            if (this.jogos.get(i).getId() == id) {
-                this.jogos.remove(i);
-                return true;
-            }
-        }
-        return false;
-    }
+    // =========================================================================
+    // PARTE 3 (NÚMERO 5): Validação e Exclusão
+    // @author Saulo Magno Santos de Jesus
+    // =========================================================================
 
     /**
-     * Verifica se a biblioteca esta vazia.
+     * Verifica se a biblioteca está vazia.
      *
-     * @return true se nao houver nenhum jogo cadastrado; false caso contrario.
+     * @author Saulo Magno Santos de Jesus
+     * @return true se não houver nenhum jogo cadastrado; false caso contrário.
      */
     public boolean estaVazia() {
-        return this.jogos.isEmpty();
+        return this.listaDeJogos.isEmpty();
     }
 
     /**
-     * Imprime a lista completa de jogos cadastrados com a analise polimorfica.
-     */
-    public void imprimirLista() {
-        if (this.jogos.isEmpty()) {
-            System.out.println("Nenhum jogo cadastrado na biblioteca.");
-            return;
-        }
-
-        System.out.println("\n========== LISTA DE JOGOS CADASTRADOS ==========");
-        for (Jogo jogo : this.jogos) {
-            imprimirJogo(jogo);
-        }
-    }
-
-    /**
-     * Imprime os detalhes individuais de um jogo e a sua analise polimorfica.
+     * Exclui um jogo da coleção a partir de seu identificador único.
      *
-     * @param jogo Objeto Jogo a ser exibido.
+     * @author Saulo Magno Santos de Jesus
+     * @param id Identificador do jogo a ser removido.
+     * @return true se o jogo foi localizado e removido; false caso contrário.
      */
-    public void imprimirJogo(Jogo jogo) {
-        if (jogo == null) {
-            System.out.println("Jogo não encontrado.");
-            return;
+    public boolean excluirJogo(int id) {
+        Jogo jogo = consultarPorId(id);
+        if (jogo != null) {
+            this.listaDeJogos.remove(jogo);
+            return true;
         }
-
-        System.out.println("ID: #" + jogo.getId() + " | Título: " + jogo.getTitulo() + " (" + jogo.getAnoLancamento() + ")");
-        System.out.println("Gênero: " + jogo.getGenero() + " | Horas: " + jogo.getHorasJogadas() + "h | Nota: " + jogo.getNotaAvaliacao() + "/10");
-
-        if (jogo instanceof JogoPago pago) {
-            System.out.println("Tipo: Jogo Pago | Preço: R$ " + pago.getPrecoPago());
-        } else if (jogo instanceof JogoGratuito gratuito) {
-            System.out.println("Tipo: Jogo Gratuito | Gastos extras: R$ " + gratuito.getGastoItensExtras());
-        }
-
-        System.out.println("Análise: " + jogo.analisarCustoBeneficio());
-        System.out.println("----------------------------------------");
+        return false;
     }
 }

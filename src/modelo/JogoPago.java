@@ -1,8 +1,9 @@
 package modelo;
 
 /**
+ * Subclasse que representa um jogo pago, com cálculo de custo por hora jogada.
  *
- * @author Eduardo Luis
+ * @author Eduardo Luis de Oliveira Mendonça
  */
 
 public class JogoPago extends Jogo {
