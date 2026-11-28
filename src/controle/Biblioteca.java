@@ -6,9 +6,9 @@ import java.util.List;
 import modelo.Jogo;
 
 /**
- * @author Ícaro Santos Silva
+ * 
  * @author Eduardo Santana dos Santos
- * @author Saulo Magno Santos de Jesus
+ * 
  */
 public class Biblioteca {
 
