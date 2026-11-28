@@ -2,6 +2,8 @@ package controle;
 
 import java.util.ArrayList;
 import modelo.Jogo;
+import modelo.JogoPago;
+import modelo.JogoGratuito;
 
 /**
  * Classe responsavel pelo gerenciamento da colecao de jogos da biblioteca.
@@ -63,6 +65,31 @@ public class Biblioteca {
     }
 
     /**
+     * Exclui um jogo da colecao a partir de seu identificador unico.
+     *
+     * @param id Identificador do jogo a ser removido.
+     * @return true se o jogo foi localizado e removido; false caso contrario.
+     */
+    public boolean excluirJogo(int id) {
+        for (int i = 0; i < this.jogos.size(); i++) {
+            if (this.jogos.get(i).getId() == id) {
+                this.jogos.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Verifica se a biblioteca esta vazia.
+     *
+     * @return true se nao houver nenhum jogo cadastrado; false caso contrario.
+     */
+    public boolean estaVazia() {
+        return this.jogos.isEmpty();
+    }
+
+    /**
      * Imprime a lista completa de jogos cadastrados com a analise polimorfica.
      */
     public void imprimirLista() {
@@ -73,10 +100,31 @@ public class Biblioteca {
 
         System.out.println("\n========== LISTA DE JOGOS CADASTRADOS ==========");
         for (Jogo jogo : this.jogos) {
-            System.out.println("ID: " + jogo.getId() + " | Título: " + jogo.getTitulo() + " (" + jogo.getAnoLancamento() + ")");
-            System.out.println("Gênero: " + jogo.getGenero() + " | Horas: " + jogo.getHorasJogadas() + "h | Nota: " + jogo.getNotaAvaliacao());
-            System.out.println("Análise: " + jogo.analisarCustoBeneficio());
-            System.out.println("--------------------------------------------------");
+            imprimirJogo(jogo);
         }
+    }
+
+    /**
+     * Imprime os detalhes individuais de um jogo e a sua analise polimorfica.
+     *
+     * @param jogo Objeto Jogo a ser exibido.
+     */
+    public void imprimirJogo(Jogo jogo) {
+        if (jogo == null) {
+            System.out.println("Jogo não encontrado.");
+            return;
+        }
+
+        System.out.println("ID: #" + jogo.getId() + " | Título: " + jogo.getTitulo() + " (" + jogo.getAnoLancamento() + ")");
+        System.out.println("Gênero: " + jogo.getGenero() + " | Horas: " + jogo.getHorasJogadas() + "h | Nota: " + jogo.getNotaAvaliacao() + "/10");
+
+        if (jogo instanceof JogoPago pago) {
+            System.out.println("Tipo: Jogo Pago | Preço: R$ " + pago.getPrecoPago());
+        } else if (jogo instanceof JogoGratuito gratuito) {
+            System.out.println("Tipo: Jogo Gratuito | Gastos extras: R$ " + gratuito.getGastoItensExtras());
+        }
+
+        System.out.println("Análise: " + jogo.analisarCustoBeneficio());
+        System.out.println("----------------------------------------");
     }
 }
