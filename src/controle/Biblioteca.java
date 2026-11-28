@@ -2,10 +2,12 @@ package controle;
 
 import java.util.ArrayList;
 import modelo.Jogo;
-
+import modelo.JogoPago;
+import modelo.JogoGratuito;
 /**
  * Classe responsavel pelo gerenciamento da colecao de jogos da biblioteca.
  */
+
 public class Biblioteca {
 
     private ArrayList<Jogo> jogos;
@@ -41,6 +43,15 @@ public void incluirJogo(Jogo jogo) {
         return null;
     }
 
+public boolean excluirJogo(int id) {
+    for (int i = 0; i < this.jogos.size(); i++) {
+        if (this.jogos.get(i).getId() == id) {
+            this.jogos.remove(i);
+            return true;
+        }
+    }
+    return false;
+}
     /**
      * Altera os dados variaveis de um jogo existente (horas jogadas e nota).
      *
@@ -58,15 +69,39 @@ public void incluirJogo(Jogo jogo) {
         }
         return false;
     }
-    public void imprimirLista() {
-    if (this.jogos.isEmpty()) {
-        System.out.println("Nenhum jogo cadastrado na biblioteca.");
-        return;
+   public boolean estaVazia() {
+        return this.jogos.isEmpty();
     }
 
-    for (Jogo jogo : this.jogos) {
-        System.out.println(jogo);
+    public void imprimirLista() {
+        if (this.jogos.isEmpty()) {
+            System.out.println("Nenhum jogo cadastrado na biblioteca.");
+            return;
+        }
+
+        for (Jogo jogo : this.jogos) {
+            imprimirJogo(jogo);
+        }
+    }
+
+    public void imprimirJogo(Jogo jogo) {
+        if (jogo == null) {
+            System.out.println("Jogo não encontrado.");
+            return;
+        }
+
+        System.out.println("ID: #" + jogo.getId() + " | Título: " + jogo.getTitulo() + " (" + jogo.getAnoLancamento() + ")");
+        System.out.println("Gênero: " + jogo.getGenero() + " | Horas: " + jogo.getHorasJogadas() + "h | Nota: " + jogo.getNotaAvaliacao() + "/10");
+
+        if (jogo instanceof JogoPago pago) {
+            System.out.println("Tipo: Jogo Pago | Preço: R$ " + pago.getPrecoPago());
+        } else if (jogo instanceof JogoGratuito gratuito) {
+            System.out.println("Tipo: Jogo Gratuito | Gastos extras: R$ " + gratuito.getGastoItensExtras());
+        }
+
+        System.out.println("Análise: " + jogo.analisarCustoBeneficio());
+        System.out.println("----------------------------------------");
     }
 }
     
-}
+
